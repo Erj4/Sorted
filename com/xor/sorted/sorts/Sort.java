@@ -7,7 +7,9 @@ import javafx.concurrent.Task;
 import com.xor.sorted.Sorter;
 
 public abstract class Sort {
-  protected AtomicInteger delay = new AtomicInteger(10000);
+  private static final int DEFAULT_DELAY = 10000;
+
+  protected AtomicInteger delay = new AtomicInteger();
   protected boolean done = true;
   protected ArrayList<Integer> list;
   protected boolean paused = false;
@@ -29,6 +31,7 @@ public abstract class Sort {
     Task<ArrayList<Integer>> task = new Task<ArrayList<Integer>>() {
       @Override
       protected ArrayList<Integer> call() throws Exception {
+        tick();
         sortImpl();
         done=true;
         sorter.nextSort();
@@ -57,7 +60,8 @@ public abstract class Sort {
     return done;
   }
 
-  public void setDelay(int delay){
+  public void setDelay(Integer delay){
+    if(delay==null) delay = DEFAULT_DELAY;
     this.delay.set(delay);
   }
 

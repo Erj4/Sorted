@@ -2,30 +2,37 @@ package com.xor.sorted;
 
 import com.xor.sorted.Sorter;
 import com.xor.sorted.sorts.*;
-
-import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
+import java.lang.Math;
 import java.util.ArrayList;
+import javafx.animation.AnimationTimer;
+import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.*;
 import javafx.stage.Stage;
-import javafx.animation.AnimationTimer;
 
 public class Main extends Application {
-  int POINTS_NUMBER = 20000;
+  int POINTS_NUMBER = 450;
   int MAX_VALUE = 800;
+  int SLIDER_MIN = 0;
+  int SLIDER_MAX = 8;
+  int SLIDER_DEF = 8;
 
   public static void main(String[] args){
     launch(args);
   }
 
   public void start(Stage stage){
-    Canvas canvas = new Canvas(1900, MAX_VALUE);
-    Pane root = new Pane(canvas);
+    Canvas canvas = new Canvas(1800, MAX_VALUE);
+    HBox canvasContainer = new HBox(canvas);
+    Slider speedSlider = new Slider(SLIDER_MIN, SLIDER_MAX, SLIDER_DEF);
+    speedSlider.setMaxWidth(200);
+    HBox controlBar = new HBox(speedSlider);
+    VBox root = new VBox(canvasContainer, controlBar);
     Scene scene = new Scene(root);
     stage.setTitle("Sorted!");
     stage.setScene(scene);
@@ -41,6 +48,8 @@ public class Main extends Application {
       }
     };
     at.start();
+    speedSlider.valueProperty().addListener((ov, b, a)->sorter.setDelay((int) Math.pow(10, (double) a)));
+    sorter.setDelay((int) Math.pow(10, SLIDER_DEF));
 
     sorter.queue(new Quick(sorter));
     sorter.queue(new Insertion(sorter));

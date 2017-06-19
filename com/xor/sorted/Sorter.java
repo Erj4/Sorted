@@ -1,24 +1,17 @@
 package com.xor.sorted;
 
-import java.lang.Thread;
-
-import javafx.concurrent.Task;
-import javafx.application.Platform;
-import javafx.scene.canvas.Canvas;
 import java.util.ArrayList;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.*;
 import java.util.ArrayDeque;
 import com.xor.sorted.sorts.Sort;
 
 public class Sorter{
 
   private ArrayList<Integer> originalList;
-  Sort currentSort=null;
+  private Sort currentSort=null;
+  private Integer customDelay=null;
 
-  int POINTS_NUMBER;
-  int MAX_VALUE;
-
+  private int POINTS_NUMBER;
+  private int MAX_VALUE;
 
   private ArrayDeque<Sort> sortQueue = new ArrayDeque<>();
 
@@ -38,6 +31,7 @@ public class Sorter{
     Sort nextSort = sortQueue.poll();
     if(nextSort!=null){
       currentSort = nextSort;
+      currentSort.setDelay(customDelay);
       currentSort.sort();
     }
   }
@@ -54,5 +48,10 @@ public class Sorter{
   public boolean isDone(){
     if (currentSort==null) return false;
     return currentSort.isDone();
+  }
+
+  public void setDelay(Integer delay){
+    if (currentSort!=null) currentSort.setDelay(delay);
+    customDelay = delay;
   }
 }
