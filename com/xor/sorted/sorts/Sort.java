@@ -32,6 +32,7 @@ public abstract class Sort {
         sortImpl();
         done=true;
         sorter.nextSort();
+        killed=false;
         return list;
       }
     };

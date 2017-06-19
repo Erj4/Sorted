@@ -30,13 +30,16 @@ public class Sorter{
 
   void queue(Sort sort){
     sortQueue.add(sort);
-    if(currentSort == null) nextSort();
+    if(currentSort == null || currentSort.isDone()) nextSort();
   }
 
   public void nextSort(){
-    if(currentSort!=null) currentSort.end();
-    currentSort=sortQueue.poll();
-    if (currentSort != null) currentSort.sort();
+    if(currentSort!=null && !currentSort.isDone()) currentSort.end();
+    Sort nextSort = sortQueue.poll();
+    if(nextSort!=null){
+      currentSort = nextSort;
+      currentSort.sort();
+    }
   }
 
   public ArrayList<Integer> getList(){
@@ -49,6 +52,7 @@ public class Sorter{
   }
 
   public boolean isDone(){
-    return currentSort==null;
+    if (currentSort==null) return false;
+    return currentSort.isDone();
   }
 }

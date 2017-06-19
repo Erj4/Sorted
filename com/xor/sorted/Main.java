@@ -42,8 +42,9 @@ public class Main extends Application {
     };
     at.start();
 
-    sorter.queue(new Bubble(sorter, 100));
     sorter.queue(new Quick(sorter));
+    sorter.queue(new Insertion(sorter));
+    sorter.queue(new Bubble(sorter));
   }
 
   ArrayList<Integer> getRandomPoints(){
